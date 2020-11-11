@@ -5,7 +5,7 @@ var svg = d3.select("svg"),
 //var margin  = {top: 10, right: 5, bottom: 10, left: 100},
 // width   = 1400-margin.left-margin.right,
 // height  = 900-margin.top-margin.bottom;
-
+//used d3 simulation
 var simulation = d3
   .forceSimulation()
   .force(
