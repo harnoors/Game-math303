@@ -12,3 +12,24 @@ text {
   font-family: sans-serif;
   font-size: 10px;
 }
+
+.title{
+  height: 75px;
+  padding: 20px;
+  background-color: #151E3D;
+  border: 10px;
+  color: white;
+  font-family: monospace;
+}
+
+.DeadlyTrio{
+  float: left;
+  font-family: monospace;
+}
+
+.design{
+  float: right;
+  color: white;
+  padding: 10px;
+  text-decoration:none;
+}

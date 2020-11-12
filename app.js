@@ -123,6 +123,16 @@ function run(graph) {
       .style("fill", "#333");
   }
 }
+// s: source node id, t: target node id, v: value
+
+function updatelinks(s, t, v) {
+  if (v == 1){
+    graph.links.push({ source: s, target: t, value: 1 });
+  }
+  if( v == 2){
+    graph.links.push({ source: s, target: t, value: 2 });
+  }
+}
 
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
@@ -155,13 +165,19 @@ function sleep(milliseconds) {
 }
 
 function game() {
-  graph.links.push({ source: "4", target: "3", value: 2 });
 
-  graph.links.push({ source: "4", target: "6", value: 1 });
+//if (eventlistener == 1 || eventlistener == 2)
+// add event listener and get source and target and then call update links with the values
+//updatelinks(4,3,2);
+//updatelinks(4,2,1);
+//  graph.links.push({ source: "4", target: "3", value: 2 });
 
-  //graph.links.push({"source": "4", "target": "2", "value": 1})
-  run(graph);
+//  graph.links.push({ source: "4", target: "6", value: 1 });
+
+//  graph.links.push({source: "4", target: "2", value: 1});
+ run(graph);
 }
 
 //graph.links.append(li)
+
 game(graph);
