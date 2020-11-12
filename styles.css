@@ -33,3 +33,6 @@ text {
   padding: 10px;
   text-decoration:none;
 }
+.instructions{
+  font-family: monospace;
+}
