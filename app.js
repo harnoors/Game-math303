@@ -2,10 +2,6 @@ var svg = d3.select("svg"),
   width = +svg.attr("width"),
   height = +svg.attr("height");
 
-//var margin  = {top: 10, right: 5, bottom: 10, left: 100},
-// width   = 1400-margin.left-margin.right,
-// height  = 900-margin.top-margin.bottom;
-//used d3 simulation
 var simulation = d3
   .forceSimulation()
   .force(
@@ -14,14 +10,14 @@ var simulation = d3
       return d.id;
     })
   )
-  .force("charge", d3.forceManyBody().strength(-100))
-  .force("charge", d3.forceManyBody().strength(-200).theta(0.8).distanceMax(80))
+  .force(
+    "charge",
+    d3.forceManyBody().strength(-100).theta(0.6).distanceMax(120)
+  )
   .force(
     "collide",
     d3
-      .forceCollide()
-      .radius((d) => 5)
-      .iterations(2)
+      .forceCollide(35)
   )
   .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -33,28 +29,29 @@ const graph = {
     { id: "4" },
     { id: "5" },
     { id: "6" },
+    { id: "7" },
+
   ],
-  links: [
-    //{"source": "1", "target": "2", "value": 1},
-    //{"source": "2", "target": "4", "value": 1},
-    // {"source": "4", "target": "5", "value": 1},
-  ],
+  links: [],
 };
 
+var link, node, label;
 
 function run(graph) {
-  var link = svg
+  link = svg
     .append("g")
-    //.style("stroke",  function(d) {if (d.value === 1) return "#0000ff"; else return "#ff0000"})
-    //.attr("stroke-width", 3)
     .selectAll("line")
     .data(graph.links)
     .enter()
     .append("line")
-    .style("stroke",  function(d) {if (d.value === 1) return "#0000ff"; else return "#ff0000"})
+    .style("stroke", function (d) {
+      if (d.value === 1) return "#0000ff";
+      else return "#ff0000";
+    })
     .attr("stroke-width", 3);
 
-  var node = svg
+
+  node = svg
     .append("g")
     .attr("class", "nodes")
     .selectAll("circle")
@@ -70,7 +67,7 @@ function run(graph) {
         .on("end", dragended)
     );
 
-  var label = svg
+  label = svg
     .append("g")
     .attr("class", "labels")
     .selectAll("text")
@@ -81,59 +78,132 @@ function run(graph) {
     .text(function (d) {
       return d.id;
     });
+
   simulation.nodes(graph.nodes).on("tick", ticked);
-
   simulation.force("link").links(graph.links);
-
-  function ticked() {
-    link
-      .attr("x1", function (d) {
-        return d.source.x;
-      })
-      .attr("y1", function (d) {
-        return d.source.y;
-      })
-      .attr("x2", function (d) {
-        return d.target.x;
-      })
-      .attr("y2", function (d) {
-        return d.target.y;
-      });
-
-    node
-      .attr("r", 16)
-      .style("fill", "#efefff")
-      .style("stroke", "#424242")
-      .style("stroke-width", "1=5px")
-      .attr("cx", function (d) {
-        return d.x + 5;
-      })
-      .attr("cy", function (d) {
-        return d.y - 3;
-      });
-
-    label
-      .attr("x", function (d) {
-        return d.x;
-      })
-      .attr("y", function (d) {
-        return d.y;
-      })
-      .style("font-size", "10px")
-      .style("fill", "#333");
-  }
 }
 // s: source node id, t: target node id, v: value
+function ticked() {
+  link
+    .attr("x1", function (d) {
+      return d.source.x;
+    })
+    .attr("y1", function (d) {
+      return d.source.y;
+    })
+    .attr("x2", function (d) {
+      return d.target.x;
+    })
+    .attr("y2", function (d) {
+      return d.target.y;
+    });
 
+  node
+    .attr("r", 16)
+    .style("fill", "#ffff99")
+    .style("stroke", "#424242")
+    .style("stroke-width", "3px")
+    .attr("cx", function (d) {
+      return d.x + 5;
+    })
+    .attr("cy", function (d) {
+      return d.y - 3;
+    })
+    .attr("r", 30);
+
+  label
+    .attr("x", function (d) {
+      return d.x;
+    })
+    .attr("y", function (d) {
+      return d.y;
+    })
+    .style("font-size", "15px")
+    .style("fill", "#333");
+}
+
+function update() {
+
+  node = node.data(graph.nodes, function (d) {
+    return d.id;
+  });
+
+
+
+  node
+    .attr("r", 16)
+    .style("fill", "#efefff")
+    .style("stroke", "#424242")
+    .style("stroke-width", "1=5px")
+    .attr("cx", function (d) {
+      return d.x + 5;
+    })
+    .attr("cy", function (d) {
+      return d.y - 3;
+    });
+
+
+  link
+    .transition()
+    .attr("stroke-opacity", 0)
+    .attrTween("x1", function (d) {
+      return function () {
+        return d.source.x;
+      };
+    })
+    .attrTween("x2", function (d) {
+      return function () {
+        return d.target.x;
+      };
+    })
+    .attrTween("y1", function (d) {
+      return function () {
+        return d.source.y;
+      };
+    })
+    .attrTween("y2", function (d) {
+      return function () {
+        return d.target.y;
+      };
+    })
+    .style("stroke", function (d) {
+      if (d.value === 1) return "#0000ff";
+      else return "#ff0000";
+    })
+    .attr("stroke-width", 3)
+    .remove();
+
+  link = svg
+    .append("g")
+    .selectAll("line")
+    .data(graph.links)
+    .enter()
+    .append("line")
+    .style("stroke", function (d) {
+      if (d.value === 1) return "#0000ff";
+      else return "#ff0000";
+    })
+    .attr("stroke-width", 3);
+
+  // Update and restart the simulation.
+
+  simulation.nodes(graph.nodes);
+  simulation.force("link").links(graph.links);
+  simulation.alpha(1).restart();
+}
+
+/*
 function updatelinks(s, t, v) {
-  if (v == 1){
+  if (v == 1) {
     graph.links.push({ source: s, target: t, value: 1 });
   }
-  if( v == 2){
+  if (v == 2) {
     graph.links.push({ source: s, target: t, value: 2 });
   }
 }
+*/
 
+//
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
@@ -151,33 +221,48 @@ function dragended(d) {
   if (!d3.event.active) simulation.alphaTarget(0);
 }
 
-// function run updates graph
-// function game is to add new elements to the graph
-//      -- sill need to add color to edges in graph
-
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if (new Date().getTime() - start > milliseconds) {
-      break;
-    }
-  }
-}
-
+var button1 = document
+  .getElementById("button1")
+  .addEventListener("click", function () {
+    graph.links.push({ source: "1", target: "2", value: 2 });
+    update();
+  });
+var button2 = document
+  .getElementById("button2")
+  .addEventListener("click", function () {
+    graph.links.push({ source: "2", target: "3", value: 1 });
+    update();
+  });
+var button3 = document
+  .getElementById("button3")
+  .addEventListener("click", function () {
+    graph.links.push({ source: "1", target: "3", value: 2 });
+    update();
+  });
+var button4 = document
+  .getElementById("button4")
+  .addEventListener("click", function () {
+    graph.links.push({ source: "1", target: "5", value: 2 });
+    update();
+  });
+var button5 = document
+  .getElementById("button5")
+  .addEventListener("click", function () {
+    graph.links.push({ source: "5", target: "6", value: 1 });
+    update();
+  });
+var button6 = document
+  .getElementById("button6")
+  .addEventListener("click", function () {
+    graph.links.push({ source: "3", target: "4", value: 1 });
+    update();
+  });
 function game() {
 
-//if (eventlistener == 1 || eventlistener == 2)
-// add event listener and get source and target and then call update links with the values
-//updatelinks(4,3,2);
-//updatelinks(4,2,1);
-//  graph.links.push({ source: "4", target: "3", value: 2 });
+  run(graph);
 
-//  graph.links.push({ source: "4", target: "6", value: 1 });
-
-//  graph.links.push({source: "4", target: "2", value: 1});
- run(graph);
 }
 
-//graph.links.append(li)
+
 
 game(graph);
