@@ -1,0 +1,55 @@
+text {
+  font-family: sans-serif;
+  font-size: 10px;
+  color: white;
+}
+
+.instructions{
+  color:white;
+  font-family: monospace;
+}
+
+.title {
+  height: 75px;
+  padding: 20px;
+  border: 10px;
+  color: white;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.DeadlyTrio {
+  float: left;
+  font-family: monospace;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.design {
+  float: right;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+}
+
+#ifame {
+  position: absolute;
+  float: left;
+  clear: both;
+  width: 100%;
+  height: 100%;
+  z-index: -9999;
+  pointer-events: none;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #00a0c6;
+  text-decoration: none;
+  cursor: pointer;
+}
