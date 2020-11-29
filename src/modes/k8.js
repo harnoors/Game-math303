@@ -149,12 +149,7 @@ function dragended(d) {
   if (!d3.event.active) simulation.alphaTarget(0);
 }
 
-function checkGraph() {
-  // check for a graph if contains a triangle diplay somethings
-}
-
 function update() {
-  checkGraph();
 
   svg.selectAll("*").remove();
   node = svg
@@ -214,19 +209,65 @@ function update() {
   }
 }
 
-function updatelinks(s, t, v) {
-  if (v == 1) {
-    graph.links.push({ source: s, target: t, value: 1 });
+function check(s,t,v){
+
+  var i = 0;
+  var counterSource = 0;
+  var counterTarget = 0;
+  var targetLinkArray = [];
+  var sourceLinkArray = [];
+  graphSourceArray = [];
+  graphTargetArray = [];
+  graphValueArray = [];
+  length = 0;
+
+
+  for(i in graph.links){
+    graphSourceArray.push(graph.links[i].source);
+
+    graphTargetArray.push(graph.links[i].target);
+
+    graphValueArray.push(graph.links[i].value);
+
+    length++;
+
   }
-  if (v == 2) {
-    graph.links.push({ source: s, target: t, value: 2 });
+  for (var i = 0; i < length-1; i++) {
+    if (graphValueArray[i] == v) {
+      if (graphSourceArray[i].id == s) {
+        sourceLinkArray.push(graphTargetArray[i].id);
+        counterSource++;
+      }
+      else if (graphTargetArray[i].id == s) {
+        sourceLinkArray.push(graphSourceArray[i].id);
+        counterSource++;
+      }
+      else if (graphSourceArray[i].id == t) {
+        targetLinkArray.push(graphTargetArray[i].id);
+        counterTarget++;
+      }
+      else if (graphTargetArray[i].id == t) {
+        targetLinkArray.push(graphSourceArray[i].id);
+        counterTarget++;
+      }
+    }
+  }
+
+  for (var k = 0; k< counterSource; k++) {
+    for (var l = 0; l< counterTarget; l++) {
+      if (targetLinkArray[l] == sourceLinkArray[k]) {
+        console.log("triangle");
+      }
+    }
   }
 }
+
 
 var button1 = document
   .getElementById("button1")
   .addEventListener("click", function () {
     graph.links.push({ source: "1", target: "2", value: ctr % 2 });
+    check(1,2,ctr % 2);
     update();
     document.getElementById("button1").style.visibility = "hidden";
   });
@@ -235,6 +276,7 @@ var button2 = document
   .getElementById("button2")
   .addEventListener("click", function () {
     graph.links.push({ source: "1", target: "3", value: ctr % 2 });
+    check(1,3,ctr % 2);
     update();
     document.getElementById("button2").style.visibility = "hidden";
   });
@@ -243,6 +285,7 @@ var button3 = document
   .getElementById("button3")
   .addEventListener("click", function () {
     graph.links.push({ source: "1", target: "4", value: ctr % 2 });
+    check(1,4,ctr % 2);
     update();
     document.getElementById("button3").style.visibility = "hidden";
   });
@@ -251,6 +294,7 @@ var button4 = document
   .getElementById("button4")
   .addEventListener("click", function () {
     graph.links.push({ source: "1", target: "5", value: ctr % 2 });
+    check(1,5,ctr % 2);
     update();
     document.getElementById("button4").style.visibility = "hidden";
   });
@@ -258,6 +302,7 @@ var button5 = document
   .getElementById("button5")
   .addEventListener("click", function () {
     graph.links.push({ source: "1", target: "6", value: ctr % 2 });
+    check(1,6,ctr % 2);
     update();
     document.getElementById("button5").style.visibility = "hidden";
   });
@@ -266,6 +311,7 @@ var button6 = document
   .getElementById("button6")
   .addEventListener("click", function () {
     graph.links.push({ source: "1", target: "7", value: ctr % 2 });
+    check(1,7,ctr % 2);
     update();
     document.getElementById("button6").style.visibility = "hidden";
   });
@@ -274,6 +320,7 @@ var button7 = document
   .getElementById("button7")
   .addEventListener("click", function () {
     graph.links.push({ source: "1", target: "8", value: ctr % 2 });
+    check(1,8,ctr % 2);
     update();
     document.getElementById("button7").style.visibility = "hidden";
   });
@@ -282,6 +329,7 @@ var button8 = document
   .getElementById("button8")
   .addEventListener("click", function () {
     graph.links.push({ source: "2", target: "3", value: ctr % 2 });
+    check(2,3,ctr % 2);
     update();
     document.getElementById("button8").style.visibility = "hidden";
   });
@@ -290,6 +338,7 @@ var button9 = document
   .getElementById("button9")
   .addEventListener("click", function () {
     graph.links.push({ source: "2", target: "4", value: ctr % 2 });
+    check(2,4,ctr % 2);
     update();
     document.getElementById("button9").style.visibility = "hidden";
   });
@@ -298,6 +347,7 @@ var button10 = document
   .getElementById("button10")
   .addEventListener("click", function () {
     graph.links.push({ source: "2", target: "5", value: ctr % 2 });
+    check(2,5,ctr % 2);
     update();
     document.getElementById("button10").style.visibility = "hidden";
   });
@@ -306,6 +356,7 @@ var button11 = document
   .getElementById("button11")
   .addEventListener("click", function () {
     graph.links.push({ source: "2", target: "6", value: ctr % 2 });
+    check(2,6,ctr % 2);
     update();
     document.getElementById("button11").style.visibility = "hidden";
   });
@@ -314,6 +365,7 @@ var button12 = document
   .getElementById("button12")
   .addEventListener("click", function () {
     graph.links.push({ source: "2", target: "7", value: ctr % 2 });
+    check(2,7,ctr % 2);
     update();
     document.getElementById("button12").style.visibility = "hidden";
   });
@@ -322,6 +374,7 @@ var button13 = document
   .getElementById("button13")
   .addEventListener("click", function () {
     graph.links.push({ source: "2", target: "8", value: ctr % 2 });
+    check(2,8,ctr % 2);
     update();
     document.getElementById("button13").style.visibility = "hidden";
   });
@@ -329,6 +382,7 @@ var button14 = document
   .getElementById("button14")
   .addEventListener("click", function () {
     graph.links.push({ source: "3", target: "4", value: ctr % 2 });
+    check(3,4,ctr % 2);
     update();
     document.getElementById("button14").style.visibility = "hidden";
   });
@@ -337,6 +391,7 @@ var button15 = document
   .getElementById("button15")
   .addEventListener("click", function () {
     graph.links.push({ source: "3", target: "5", value: ctr % 2 });
+    check(3,5,ctr % 2);
     update();
     document.getElementById("button15").style.visibility = "hidden";
   });
@@ -345,6 +400,7 @@ var button16 = document
   .getElementById("button16")
   .addEventListener("click", function () {
     graph.links.push({ source: "3", target: "6", value: ctr % 2 });
+    check(3,6,ctr % 2);
     update();
     document.getElementById("button16").style.visibility = "hidden";
   });
@@ -352,6 +408,7 @@ var button17 = document
   .getElementById("button17")
   .addEventListener("click", function () {
     graph.links.push({ source: "3", target: "7", value: ctr % 2 });
+    check(3,7,ctr % 2);
     update();
     document.getElementById("button17").style.visibility = "hidden";
   });
@@ -359,6 +416,7 @@ var button18 = document
   .getElementById("button18")
   .addEventListener("click", function () {
     graph.links.push({ source: "3", target: "8", value: ctr % 2 });
+    check(3,8,ctr % 2);
     update();
     document.getElementById("button18").style.visibility = "hidden";
   });
@@ -367,6 +425,7 @@ var button19 = document
   .getElementById("button19")
   .addEventListener("click", function () {
     graph.links.push({ source: "4", target: "5", value: ctr % 2 });
+    check(4,5,ctr % 2);
     update();
     document.getElementById("button19").style.visibility = "hidden";
   });
@@ -375,6 +434,7 @@ var button20 = document
   .getElementById("button20")
   .addEventListener("click", function () {
     graph.links.push({ source: "4", target: "6", value: ctr % 2 });
+    check(4,6,ctr % 2);
     update();
     document.getElementById("button20").style.visibility = "hidden";
   });
@@ -382,6 +442,7 @@ var button21 = document
   .getElementById("button21")
   .addEventListener("click", function () {
     graph.links.push({ source: "4", target: "7", value: ctr % 2 });
+    check(4,7,ctr % 2);
     update();
     document.getElementById("button21").style.visibility = "hidden";
   });
@@ -390,6 +451,7 @@ var button22 = document
   .getElementById("button22")
   .addEventListener("click", function () {
     graph.links.push({ source: "4", target: "8", value: ctr % 2 });
+    check(4,8,ctr % 2);
     update();
     document.getElementById("button22").style.visibility = "hidden";
   });
@@ -398,6 +460,7 @@ var button23 = document
   .getElementById("button23")
   .addEventListener("click", function () {
     graph.links.push({ source: "5", target: "6", value: ctr % 2 });
+    check(5,6,ctr % 2);
     update();
     document.getElementById("button23").style.visibility = "hidden";
   });
@@ -405,6 +468,7 @@ var button24 = document
   .getElementById("button24")
   .addEventListener("click", function () {
     graph.links.push({ source: "5", target: "7", value: ctr % 2 });
+    check(5,7,ctr % 2);
     update();
     document.getElementById("button24").style.visibility = "hidden";
   });
@@ -413,6 +477,7 @@ var button25 = document
   .getElementById("button25")
   .addEventListener("click", function () {
     graph.links.push({ source: "5", target: "8", value: ctr % 2 });
+    check(5,8,ctr % 2);
     update();
     document.getElementById("button25").style.visibility = "hidden";
   });
@@ -420,6 +485,7 @@ var button26 = document
   .getElementById("button26")
   .addEventListener("click", function () {
     graph.links.push({ source: "6", target: "7", value: ctr % 2 });
+    check(6,7,ctr % 2);
     update();
     document.getElementById("button26").style.visibility = "hidden";
   });
@@ -428,6 +494,7 @@ var button27 = document
   .getElementById("button27")
   .addEventListener("click", function () {
     graph.links.push({ source: "6", target: "8", value: ctr % 2 });
+    check(6,8,ctr % 2);
     update();
     document.getElementById("button27").style.visibility = "hidden";
   });
@@ -435,6 +502,7 @@ var button28 = document
   .getElementById("button28")
   .addEventListener("click", function () {
     graph.links.push({ source: "7", target: "8", value: ctr % 2 });
+    check(7,8,ctr % 2);
     update();
     document.getElementById("button28").style.visibility = "hidden";
   });
