@@ -41,6 +41,7 @@ const graph = {
 };
 
 var link, node, label;
+var ctr = 0; // start with color blue
 
 function run(graph) {
   link = svg
@@ -85,6 +86,11 @@ function run(graph) {
 
   simulation.nodes(graph.nodes).on("tick", ticked);
   simulation.force("link").links(graph.links);
+  
+  var allBlue = document.getElementsByClassName("addLink");
+  for (var i = 0; i < allBlue.length; i++) {
+    allBlue[i].style.boxShadow = " 1px 1px 15px #0ab8f7";
+  }
 }
 
 function ticked() {
