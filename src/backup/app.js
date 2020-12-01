@@ -10,6 +10,7 @@ var simulation = d3
       return d.id;
     })
   )
+  .force("charge", d3.forceManyBody().strength(-200))
   .force(
     "charge",
     d3.forceManyBody().strength(-100).theta(0.6).distanceMax(120)
@@ -17,7 +18,9 @@ var simulation = d3
   .force(
     "collide",
     d3
-      .forceCollide(35)
+      .forceCollide()
+      .radius((d) => 35)
+      .iterations(2)
   )
   .force("center", d3.forceCenter(width / 2, height / 2));
 
@@ -30,7 +33,9 @@ const graph = {
     { id: "5" },
     { id: "6" },
     { id: "7" },
-
+    { id: "8" },
+    { id: "9" },
+    { id: "10" },
   ],
   links: [],
 };
@@ -49,7 +54,6 @@ function run(graph) {
       else return "#ff0000";
     })
     .attr("stroke-width", 3);
-
 
   node = svg
     .append("g")
@@ -82,7 +86,7 @@ function run(graph) {
   simulation.nodes(graph.nodes).on("tick", ticked);
   simulation.force("link").links(graph.links);
 }
-// s: source node id, t: target node id, v: value
+
 function ticked() {
   link
     .attr("x1", function (d) {
@@ -122,88 +126,6 @@ function ticked() {
     .style("fill", "#333");
 }
 
-function update() {
-
-  node = node.data(graph.nodes, function (d) {
-    return d.id;
-  });
-
-
-
-  node
-    .attr("r", 16)
-    .style("fill", "#efefff")
-    .style("stroke", "#424242")
-    .style("stroke-width", "1=5px")
-    .attr("cx", function (d) {
-      return d.x + 5;
-    })
-    .attr("cy", function (d) {
-      return d.y - 3;
-    });
-
-
-  link
-    .transition()
-    .attr("stroke-opacity", 0)
-    .attrTween("x1", function (d) {
-      return function () {
-        return d.source.x;
-      };
-    })
-    .attrTween("x2", function (d) {
-      return function () {
-        return d.target.x;
-      };
-    })
-    .attrTween("y1", function (d) {
-      return function () {
-        return d.source.y;
-      };
-    })
-    .attrTween("y2", function (d) {
-      return function () {
-        return d.target.y;
-      };
-    })
-    .style("stroke", function (d) {
-      if (d.value === 1) return "#0000ff";
-      else return "#ff0000";
-    })
-    .attr("stroke-width", 3)
-    .remove();
-
-  link = svg
-    .append("g")
-    .selectAll("line")
-    .data(graph.links)
-    .enter()
-    .append("line")
-    .style("stroke", function (d) {
-      if (d.value === 1) return "#0000ff";
-      else return "#ff0000";
-    })
-    .attr("stroke-width", 3);
-
-  // Update and restart the simulation.
-
-  simulation.nodes(graph.nodes);
-  simulation.force("link").links(graph.links);
-  simulation.alpha(1).restart();
-}
-
-/*
-function updatelinks(s, t, v) {
-  if (v == 1) {
-    graph.links.push({ source: s, target: t, value: 1 });
-  }
-  if (v == 2) {
-    graph.links.push({ source: s, target: t, value: 2 });
-  }
-}
-*/
-
-//
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
   d.fx = d.x;
@@ -219,6 +141,62 @@ function dragended(d) {
   d.fx = d3.event.x;
   d.fy = d3.event.y;
   if (!d3.event.active) simulation.alphaTarget(0);
+}
+
+function update() {
+  svg.selectAll("*").remove();
+  node = svg
+    .append("g")
+    .attr("class", "nodes")
+    .selectAll("circle")
+    .data(graph.nodes)
+    .enter()
+    .append("circle")
+    .attr("r", 2)
+    .call(
+      d3
+        .drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+    );
+
+  link = svg
+    .append("g")
+    .selectAll("line")
+    .data(graph.links)
+    .enter()
+    .append("line")
+    .style("stroke", function (d) {
+      if (d.value === 1) return "#0000ff";
+      else return "#ff0000";
+    })
+    .attr("stroke-width", 3);
+
+  label = svg
+    .append("g")
+    .attr("class", "labels")
+    .selectAll("text")
+    .data(graph.nodes)
+    .enter()
+    .append("text")
+    .attr("class", "label")
+    .text(function (d) {
+      return d.id;
+    });
+
+  simulation.nodes(graph.nodes);
+  simulation.force("link").links(graph.links);
+  simulation.alpha(1).restart();
+}
+
+function updatelinks(s, t, v) {
+  if (v == 1) {
+    graph.links.push({ source: s, target: t, value: 1 });
+  }
+  if (v == 2) {
+    graph.links.push({ source: s, target: t, value: 2 });
+  }
 }
 
 var button1 = document
@@ -257,12 +235,9 @@ var button6 = document
     graph.links.push({ source: "3", target: "4", value: 1 });
     update();
   });
+
 function game() {
-
   run(graph);
-
 }
-
-
 
 game(graph);
