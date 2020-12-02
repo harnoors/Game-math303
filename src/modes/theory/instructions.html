@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+  <title>DeadlyTrio</title>
+</head>
+
+<body>
+  <iframe id="ifame" src="..\..\particles\particle.html" width=100% height=100%></iframe>
+
+  <div class="title">
+
+    <h1 class="DeadlyTrio"> <a href="../../../index.html">Deadly Trio</a></h1>
+    <a href="./references.html" class="design"><br>References</a>
+  </div>
+  <br><br><br><br>
+
+  <div class="instructions">
+    <h1 id="heading">Main Idea</h1>
+    <h2 id="details">
+      <ul>
+        <li>
+          Ramsey theorem states that when we use 2-colours to colour the edges in K6, any edge colouring of
+          it would yield a monochromatic triangle.
+        </li>
+        <li>
+          Any complete graph of vertices more than 6 also yields a monochromatic triangle as R(3,3)=6. Therefore, a
+          2-colouring of K8 and K10 yields a monochromatic triangle.
+        </li>
+      </ul>
+      <center>
+        <iframe width="782" height="440" src="https://www.youtube.com/embed/JYyuPITzMgw" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen id="video"></iframe>
+      </center>
+    </h2>
+
+    <h1 id="heading">Goal</h1>
+    <h2 id="details">
+      <ul>
+        <li>The name “Deadly-Trio” represents the monochromatic triangle.</li>
+        <li>The plan was to develop a 2-player game that consists of three diffrent levels K6, K8, and K10 which
+          represents Easy, Medium, and Hard modes respectively.</li>
+        <li>Each player will have their own unique colour and on their turn, they have to draw a line between two
+          vertices.</li>
+        <li>According to the rule of the game the player who completes the monochromatic triangle loses.</li>
+      </ul>
+
+    </h2>
+
+    <h1 id="heading">Rules to Play</h1>
+    <h2 id="details">
+      <ul>
+        <li>Initally, The Players needs to choose one from the various different levels.<br>
+        <li>Each player will represent a unique color. Where,
+          <br><br>
+          <ul>
+            <li>First player ------> <p id="blue">BLUE</p> <br></li><br>
+            <li>Second player ------> <p id="red">RED</p> <br></li><br>
+        </li>
+      </ul>
+
+      <li>On turn each player has to draw a line between two vertices to make a complete graph avoiding a monochromatic
+        triangle.<br></li>
+      <li>The player who completes the monochromatic triangle loses.</li>
+      <ul>
+        <br>
+        <li>NOTE: According to Ramsey Theorem, There will be a player who will be left with no choice other than
+          completing a triangle.<br></li>
+      </ul>
+      </ul>
+    </h2>
+
+
+
+  </div>
+
+</body>
+
+</html>
